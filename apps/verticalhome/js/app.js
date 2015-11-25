@@ -1,7 +1,7 @@
 'use strict';
 /* global ItemStore, LazyLoader, Configurator,
           groupEditor, PinnedAppsNavigation, Clock,
-          PinnedAppsManager, MoreAppsNavigation */
+          PinnedAppsManager, MoreAppsNavigation, FavoriteNavigation */
 /* global requestAnimationFrame */
 
 
@@ -134,6 +134,8 @@
 
     inMoreApps: false,
     pinnedAppsManager: null,
+    favoriteManager: null,
+    inFavoriteList: false,
     clock: new Clock(),
 
     /**
@@ -231,7 +233,7 @@
           console.error(exception);
         }
       }.bind(this));
-
+      this.favoriteManager = new FavoriteManager();
     },
 
     renderGrid: function() {
@@ -275,6 +277,38 @@
       console.log('inMoreApps is : ' + this.inMoreApps);
       document.getElementById('main-screen').classList.remove('hidden');
       document.getElementById('more-apps-screen').classList.add('hidden');
+    },
+
+    hideFavorites: function() {
+        this.inFavoriteList = false;
+        document.getElementById("main-screen").classList.remove('hidden');
+        document.getElementById("favorite-screen").classList.add('hidden');
+        document.getElementById("favorite").classList.add('hidden');
+        this.favoriteManager.clear();
+        this.pinnedAppsNavigation.reset();
+        this.clock.clockTime.parentNode.classList.remove('not-visible');
+        this.clock.start();
+    },
+
+    openFavoriteList: function(favorites, store, appIcon) {
+      this.inFavoriteList = true;
+      document.getElementById("favorite-screen").classList.remove('hidden');
+      document.getElementById("main-screen").classList.add('hidden');
+      this.favoriteManager.openFavoritesScreen(favorites, store, appIcon);
+      this.favoriteNavigation = new FavoriteNavigation(document.getElementById('favorite-list'));
+      this.favoriteNavigation.points_selector = '#favorite-list .fav-item';
+    },
+
+    pinFavoriteIcon: function(icon) {
+      var iconUrl = icon;
+      var favPinnedIcon = document.getElementById("favorite-pinned-icon");
+      favPinnedIcon.src = iconUrl;
+      favPinnedIcon.classList.add('updated');
+      document.getElementById("favorite").classList.remove('hidden');
+    },
+
+    updateFavorites: function() {
+      app.pinnedAppsManager.items.forEach(item => item.loadFavorites(item.favStoreName));
     },
 
     /**
@@ -451,7 +485,9 @@
         case 'keydown':
           if (this.inMoreApps){
             MoreAppsNavigation.handleEvent(e);
-          }else{
+          } else if (this.inFavoriteList) {
+            this.favoriteNavigation.handleEvent(e);
+          } else {
             this.pinnedAppsNavigation.handleEvent(e);
           }
           break;
@@ -460,6 +496,10 @@
         // The system app changes the hash of the homescreen iframe when it
         // receives a home button press.
         case 'hashchange':
+          if (this.inFavoriteList) {
+              this.hideFavorites();
+          }
+          document.getElementById("favorite").classList.add('hidden');
           this.hideMoreApps();
           this.pinnedAppsNavigation.reset();
           this.clock.show();
@@ -564,5 +604,4 @@
   };
   exports.app = new App();
   exports.app.init();
-
 }(window));

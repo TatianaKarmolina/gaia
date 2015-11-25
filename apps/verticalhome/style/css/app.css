@@ -104,3 +104,37 @@ body.edit-group {
   font-weight: 300;
 }
 
+#favorite {
+  position: fixed;
+  width: 7.5rem;
+  height: 7.5rem;
+  top: 10rem;
+  left: 0rem;
+  visibility: visible;
+}
+
+#favorite-pinned-icon.updated{
+  position: fixed;
+  top: 10rem;
+  left: -2.5rem;
+  width: inherit;
+  height: inherit;
+  border: 0.1rem solid #00adad;
+  border-radius: 5rem;
+}
+
+#arrow-left.image{
+  background-image: url(/style/images/arrow_left_icon.png);
+  background-repeat: no-repeat;
+  position: fixed;
+  top: inherit;
+  left: inherit;
+  width: 1rem;
+  height: 1.5rem;
+  margin-top: 3.75rem;
+  margin-left: 5.5rem;
+}
+
+.not-visible{
+  opacity: 0 !important;
+}

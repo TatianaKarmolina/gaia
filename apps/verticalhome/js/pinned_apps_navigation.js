@@ -201,6 +201,7 @@
             }
 
           }
+          this.elements[this.selectedElemIndex].dispatchEvent(new CustomEvent('show-favorite-icon'));
 
           var lastElem = this.elements[this.elements.length - 1];
           var clonedElem = lastElem.cloneNode(true);
@@ -266,6 +267,7 @@
             this.elemList.style.top = topStyle - 6 + 'rem';
             this.elemList.dataset.scrolldown = this.elemList.style.top;
           }
+          this.elements[this.selectedElemIndex].dispatchEvent(new CustomEvent('show-favorite-icon'));
 
           if (this.selectedElemIndex == 1) {
             this.elemList.style.top = '0rem';
@@ -284,8 +286,12 @@
           }
 
           break;
-      }
 
+        case 'ArrowLeft':
+          e.preventDefault();
+          this.elements[this.selectedElemIndex].dispatchEvent(new CustomEvent('open-favorites'));
+          break;
+      }
     },
 
     /**

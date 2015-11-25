@@ -8,6 +8,8 @@
 
     <link rel="stylesheet" href="style/css/app.css">
     <link rel="stylesheet" href="style/css/pinned_apps.css">
+    <link rel="stylesheet" href="style/css/search.css">
+    <link rel="stylesheet" href="style/css/favorite.css">
     <link rel="stylesheet" href="shared/elements/gaia_grid_rs/style/external.css">
     <meta name="defaultLanguage" content="en-US">
     <meta name="availableLanguages" content="ar, en-US, fr, zh-TW">
@@ -15,7 +17,6 @@
     <link rel="localization" href="/shared/elements/gaia_grid_rs/locales/gaia_grid_rs.{locale}.properties">
     <link rel="localization" href="/shared/elements/gaia_menu/locales/gaia_menu.{locale}.properties">
     <link rel="localization" href="/shared/locales/date/date.{locale}.properties">
-
     <script defer src="shared/js/performance_testing_helper.js"></script>
     <script defer src="shared/js/l10n.js"></script>
     <script defer src="shared/js/l10n_date.js"></script>
@@ -42,12 +43,9 @@
     <script defer src="js/pinned_apps.js"></script>
     <script defer src="shared/js/homescreens/vertical_preferences.js"></script>
 
-
-
- <script defer src="shared/js/favorites_store.js"></script>
- <script defer src="shared/js/bookmarks_database.js"></script>
-
-
+    <script defer src="shared/js/favorites_store.js"></script>
+    <script defer src="js/favorite.js"></script>
+    <script defer src="shared/js/bookmarks_database.js"></script>
     <script defer src="shared/js/lazy_loader.js"></script>
     <script defer src="shared/js/url_helper.js"></script>
 
@@ -74,11 +72,14 @@
     <script defer src="js/more_apps_navigation.js"></script>
     <script defer src="js/clock.js"></script>
     <script defer src="js/app.js"></script>
+    <script defer src="js/favorite_navigation.js"></script>
+
     <!--//TODO <script src="js/data_store.js"></script> -->
     
     <!-- <script defer src="shared/js/icc_helper.js"></script> -->
     <!-- <script defer src="shared/js/version_helper.js"></script> -->
     <!-- <script defer src="js/configurator.js"></script> -->
+
   </head>
   <body class="theme-media">
     <div id="curtain"></div>
@@ -96,6 +97,17 @@
           <span class="title" data-l10n-id='more-apps-title'>More Apps</span>
         </div>
       </div>
+
+      <div id="favorite" class="hidden">
+        <img id="favorite-pinned-icon">
+        </img>
+        <div id="arrow-left" class="image"> </div>
+      </div>
+    </section>
+
+    <section id="favorite-screen" role="region" class="hidden">
+      <div class='favorite-header'>Favorite</div>
+      <div id="favorite-list"/>
     </section>
 
     <section id="more-apps-screen" role="region" class="hidden">

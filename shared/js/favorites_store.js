@@ -27,7 +27,6 @@
     this.favoritesStore.then(function(stores) {
       if (stores.length > 0) {
         var store = stores[0];
-
         var onFavoritesStoreChanged = function(event) {
           console.log("Store event:" + event.operation);
           if (event.operation == "removed") {
@@ -47,7 +46,6 @@
             });
           }
         }
-
         store.onchange = onFavoritesStoreChanged;
         console.log("Registered listener, store name:" + store.name);
       }
@@ -249,7 +247,6 @@
     } else {
         console.log('** getting FavoritesItems')
     }
-
     return new Promise(function(resolve, reject) {
       datastore.then(function(stores) {
         console.log("hello!: count:" + stores.length);
@@ -728,6 +725,7 @@
    *
    * @param{Numeric} index - The new value for the favorites item index.
    */
+
   exports.FavoritesItem.prototype.setIndex = function(index) {
     this.index = index;
   }
@@ -855,6 +853,4 @@
   exports.ActionsItem.prototype.getId = function() {
     return this.storeId;
   }
-
-
 })(window);

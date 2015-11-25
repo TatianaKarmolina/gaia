@@ -46,6 +46,7 @@
   "orientation": "default",
   "activities": {},
   "messages": [],
+
   "datastores-access": {
     "bookmarks_store": {
       "readonly": false,
@@ -56,10 +57,12 @@
       "description": "Display collections"
     },
     "settings": {
-      "access" : "readwrite",
+      "access": "readwrite",
+      "readonly": false,
       "description": "The settings data store owned by the Settings app."
     }
   },
+
   "datastores-owned": {
     "vertical_preferences_store": {
       "access": "readwrite",

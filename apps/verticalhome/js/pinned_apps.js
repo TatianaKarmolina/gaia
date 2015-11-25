@@ -28,16 +28,20 @@
     this.icon = pinnedAppIcon;
     this.title = pinnedAppTitle;
 
-    if (entry){
+    if (entry) {
       this.entry = entry;
       this.entry.index = this.index;
       this.targetApp = app.getAppByURL(this.entry.manifestURL);
       this.render();
+
+      //load favorites:
+      this.favStoreName = "settings"; //TODO: get fav store name
+      this.loadFavorites(this.favStoreName);
     }
+    this.favoritesList = [];
   }
 
   PinnedAppItem.prototype = {
-
     render: function() {
 
       var self = this;
@@ -59,6 +63,9 @@
 
         if (this.entry){
           this.element.addEventListener('click', this);
+          this.element.addEventListener('open-favorites', this);
+          this.element.addEventListener('show-favorite-icon', this);
+          this.element.addEventListener('delete-all-favorites', this);
 
           this.element.dataset.manifesturl = this.entry.manifestURL;
           this.element.dataset.entrypoint = this.entry.entry_point;
@@ -113,7 +120,10 @@
         index: this.index
       };
       this.element.removeEventListener('click', this);
+      this.element.removeEventListener('open-favorites', this);
+      this.element.removeEventListener('show-favorite-icon', this);
       this.targetApp = null;
+      this.favoritesList = null;
     },
 
     launch: function() {
@@ -137,8 +147,38 @@
     },
 
     handleEvent: function(e) {
-      this.launch();
-    }
+      switch(e.type) {
+        case 'click':
+          this.launch();
+          break;
+
+        case 'open-favorites':
+          app.openFavoriteList(this.favoritesList, this.favStoreName, this.icon.src);
+          break;
+
+        case 'show-favorite-icon':
+          var iconSrc = "/style/images/add_75px.png";
+          if (this.favoritesList && (this.favoritesList.length > 0)) {
+            iconSrc = this.favoritesList[this.favoritesList.length-1].image;
+          }
+          app.pinFavoriteIcon(iconSrc);
+          break;
+      }
+    },
+
+    loadFavorites: function(dataStoreName) {
+     var self = this;
+     self._favoriteStore = new FavoritesStore(dataStoreName, 'fav_actions');
+      if (self._favoriteStore) {
+        self._favoriteStore.getAllFavorites().then(function(items) {
+          self.favoritesList = items;
+      }).catch(function(reason) {
+        console.log("Favorites not loaded something went wrong");
+      });
+      } else {
+        console.log("Cannot get favorites store for " +dataStoreName);
+      }
+    },
   };
 
   function PinnedAppsManager() {

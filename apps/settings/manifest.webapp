@@ -86,6 +86,7 @@
     "settings_actions": {
       "access" : "readwrite",
       "description": "The Settings App data store for action items."
+
     }
   },
   "datastores-access": {
